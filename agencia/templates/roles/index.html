@@ -1,0 +1,50 @@
+{% extends 'base.html' %} {% block titulo %} Lista de Roles {% endblock %} {% block contenido %}
+
+<div class="card">
+    <div class="card-header">
+        {% if request.user.is_superuser or perms.auth.add_group %}
+        <a class="btn btn-success" href="{% url 'registrar_rol' %}" role="button">
+            <i class="bi bi-plus-circle me-1"></i>Agregar nuevo Rol
+        </a>
+        {% endif %}
+    </div>
+    <div class="card-body">
+        <h4 class="card-title">Roles y Permisos</h4>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Nombre del Rol</th>
+                        <th scope="col">Permisos asignados</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for rol in roles %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td><strong>{{ rol.name }}</strong></td>
+                        <td>
+                            {% for permiso in rol.permissions.all %}
+                            <span class="badge bg-secondary me-1">{{ permiso.name }}</span> {% empty %}
+                            <span class="text-muted">Sin permisos</span> {% endfor %}
+                        </td>
+                        <td>
+                            {% if request.user.is_superuser or perms.auth.change_group %}
+                            <a class="btn btn-info btn-sm" href="{% url 'actualizar_rol' id=rol.id %}" role="button">Editar</a> {% endif %} {% if request.user.is_superuser or perms.auth.delete_group %}
+                            <a class="btn btn-danger btn-sm" href="{% url 'eliminar_rol' id=rol.id %}" onclick="return confirm('¿Seguro que deseas eliminar el rol {{ rol.name }}?')" role="button">Eliminar</a> {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center text-muted">No hay roles registrados.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

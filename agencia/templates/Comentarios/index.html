@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block titulo %} Comentarios - {{ paquete.nombre }} {% endblock %}
+
+{% block contenido %}
+
+<div class="card mb-4">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0"><i class="bi bi-gift me-2"></i>{{ paquete.nombre }}</h5>
+        <a class="btn btn-secondary btn-sm" href="{% url 'paquetes' %}">
+            <i class="bi bi-arrow-left me-1"></i>Volver a Paquetes
+        </a>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <p><strong>Precio total:</strong> ${{ paquete.precio_total }}</p>
+                <p>
+                    <strong>Estado:</strong>
+                    {% if paquete.activo %}
+                        <span class="badge bg-success">Activo</span>
+                    {% else %}
+                        <span class="badge bg-danger">Inactivo</span>
+                    {% endif %}
+                </p>
+            </div>
+            <div class="col-md-6">
+                <strong>Productos incluidos:</strong>
+                <ul class="mt-1">
+                    {% for producto in paquete.productos.all %}
+                        <li>{{ producto.nombre }} — {{ producto.tipo }}</li>
+                    {% empty %}
+                        <li class="text-muted">Sin productos asignados</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h6 class="mb-0">
+            <i class="bi bi-chat-dots me-2"></i>Comentarios
+            <span class="badge bg-primary ms-1">{{ comentarios.count }}</span>
+        </h6>
+        {% if request.user.is_authenticated %}
+        <a class="btn btn-success btn-sm" href="{% url 'registrar_comentario' id=paquete.id %}">
+            <i class="bi bi-plus-circle me-1"></i>Agregar comentario
+        </a>
+        {% endif %}
+    </div>
+    <div class="card-body">
+        {% for comentario in comentarios %}
+        <div class="border rounded p-3 mb-3">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+                <strong><i class="bi bi-person-circle me-1"></i>{{ comentario.empleado }}</strong>
+                <span class="text-muted small">{{ comentario.fecha|date:"d/m/Y" }}</span>
+            </div>
+
+            <!-- Estrellas -->
+            <div class="mb-1">
+                {% for i in "12345" %}
+                    {% if forloop.counter <= comentario.calificacion %}
+                        <i class="bi bi-star-fill text-warning"></i>
+                    {% else %}
+                        <i class="bi bi-star text-secondary"></i>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <p class="mb-2">{{ comentario.texto }}</p>
+
+            {% if request.user == comentario.empleado or request.user.is_superuser %}
+            <div class="d-flex gap-2">
+                <a class="btn btn-info btn-sm" href="{% url 'editar_comentario' id=comentario.id %}">
+                    <i class="bi bi-pencil me-1"></i>Editar
+                </a>
+                <a class="btn btn-danger btn-sm"
+                   href="{% url 'eliminar_comentario' id=comentario.id %}"
+                   onclick="return confirm('¿Seguro que deseas eliminar este comentario?')">
+                    <i class="bi bi-trash me-1"></i>Eliminar
+                </a>
+            </div>
+            {% endif %}
+        </div>
+        {% empty %}
+        <p class="text-muted text-center py-3">
+            <i class="bi bi-chat-square-dots me-1"></i>Aún no hay comentarios. ¡Sé el primero!
+        </p>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

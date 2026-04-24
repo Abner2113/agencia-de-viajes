@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block titulo %} Lista de Proveedores {% endblock %}
+
+{% block contenido %}
+
+<div class="card">
+    <div class="card-header">
+        {% if perms.agencia.add_proveedor %}
+        <a name="" id="" class="btn btn-success" href="{% url 'registrar_proveedor' %}" role="button">Agregar nuevo Proveedor</a>
+        {% endif %}
+    </div>
+    <div class="card-body">
+        <h4 class="card-title">Proveedores</h4>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Tipo</th>
+                        <th scope="col">Contacto</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for Proveedor in proveedores %}
+                    <tr class="">
+                        <td>{{ Proveedor.nombre }}</td>
+                        <td>{{ Proveedor.tipo }}</td>
+                        <td>{{ Proveedor.contacto }}</td>
+                        <td>
+                            {% if perms.agencia.change_proveedor %}
+                            <a name="" id="" class="btn btn-info" href="{% url 'actualizar_proveedor' id=Proveedor.id %}" role="button">Editar</a>
+                            {% endif %}
+                            {% if perms.agencia.delete_proveedor %}
+                            <a name="" id="" class="btn btn-danger" href="{% url 'eliminar_proveedor' id=Proveedor.id %}"
+                            onclick="return confirm('¿Seguro que deseas eliminar a {{ proveedor.nombre }}?') "role="button">Eliminar</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

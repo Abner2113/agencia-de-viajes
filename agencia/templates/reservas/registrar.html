@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block titulo %} Registrar Reserva {% endblock %}
+
+{% block contenido %}
+
+<div class="card">
+    <div class="card-header">
+        Registrar Reserva
+    </div>
+    <div class="card-body">
+        <h4 class="card-title">Datos de la Reserva</h4>
+        {% include 'reservas/form.html' %}
+    </div>
+</div>
+
+{% endblock %}

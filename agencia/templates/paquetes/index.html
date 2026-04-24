@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block titulo %} Lista de Paquetes {% endblock %}
+
+{% block contenido %}
+
+<div class="card">
+    <div class="card-header">
+        {% if perms.agencia.add_paquete %}
+        <a class="btn btn-success" href="{% url 'registrar_paquete' %}" role="button">Agregar nuevo Paquete</a>
+        {% endif %}
+    </div>
+    <div class="card-body">
+        <h4 class="card-title">Paquetes Turísticos</h4>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Productos</th>
+                        <th scope="col">Precio Total</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for paquete in paquetes %}
+                    <tr>
+                        <td>{{ paquete.nombre }}</td>
+                        <td>
+                            {% for prod in paquete.productos.all %}
+                            <span class="badge bg-secondary">{{ prod.nombre }}</span>
+                            {% empty %}
+                            <span class="text-muted">Sin productos</span>
+                            {% endfor %}
+                        </td>
+                        <td>${{ paquete.precio_total }}</td>
+                        <td>
+                            {% if paquete.activo %}
+                            <span class="badge bg-success">Activo</span>
+                            {% else %}
+                            <span class="badge bg-secondary">Inactivo</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if perms.agencia.change_paquete %}
+                            <a class="btn btn-info" href="{% url 'actualizar_paquete' id=paquete.id %}"
+                                role="button">Editar</a>
+                            {% endif %}
+                            {% if perms.agencia.delete_paquete %}
+                            <a class="btn btn-danger" href="{% url 'eliminar_paquete' id=paquete.id %}"
+                                onclick="return confirm('¿Seguro que deseas eliminar el paquete {{ paquete.nombre }}?')"
+                                role="button">Eliminar</a>
+                            {% endif %}
+                            <a class="btn btn-secondary" href="{% url 'comentarios_paquete' id=paquete.id %}"
+                                role="button">
+                                <i class="bi bi-chat-dots me-1"></i>Comentarios
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

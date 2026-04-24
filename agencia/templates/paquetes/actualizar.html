@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block titulo %} Actualizar Paquete {% endblock %}
+
+{% block contenido %}
+
+<div class="card">
+    <div class="card-header">Actualizar Paquete</div>
+    <div class="card-body">
+        <h4 class="card-title">Datos del Paquete</h4>
+
+        {% include 'paquetes/form.html' %}
+
+    </div>
+</div>
+
+{% endblock %}

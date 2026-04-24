@@ -1,0 +1,269 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Reportes{% endblock %}
+
+{% block contenido %}
+
+<!-- Encabezado + exportar -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="mb-0">
+        <i class="bi bi-bar-chart-line me-2"></i>Reportes de Ventas
+    </h4>
+    <div class="d-flex gap-2">
+        <a href="{% url 'exportar_excel' %}?fecha_desde={{ fecha_desde }}&fecha_hasta={{ fecha_hasta }}" class="btn btn-success btn-sm">
+            <i class="bi bi-file-earmark-excel me-1"></i>Exportar Excel
+        </a>
+        <a href="{% url 'exportar_pdf' %}?fecha_desde={{ fecha_desde }}&fecha_hasta={{ fecha_hasta }}" class="btn btn-danger btn-sm">
+            <i class="bi bi-file-earmark-pdf me-1"></i>Exportar PDF
+        </a>
+    </div>
+</div>
+
+<!-- Filtros -->
+<div class="card mb-4">
+    <div class="card-header">
+        <h6 class="mb-0">
+            <i class="bi bi-funnel me-2"></i>Filtrar por período
+        </h6>
+    </div>
+    <div class="card-body">
+        <form method="get">
+            <div class="row g-3 align-items-end">
+                <div class="col-md-4">
+                    <label class="form-label">Fecha desde</label>
+                    <input type="date" name="fecha_desde" class="form-control" value="{{ fecha_desde }}" />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Fecha hasta</label>
+                    <input type="date" name="fecha_hasta" class="form-control" value="{{ fecha_hasta }}" />
+                </div>
+                <div class="col-md-4 d-flex gap-2">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="bi bi-search me-1"></i>Aplicar
+                    </button>
+                    <a href="{% url 'reportes' %}" class="btn btn-outline-secondary w-100">
+                        <i class="bi bi-x-lg me-1"></i>Limpiar
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- KPIs -->
+<div class="row g-3 mb-4">
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm text-center">
+            <div class="card-body py-4">
+                <div class="fs-2 fw-bold text-primary">
+                    ${{ total_ventas|floatformat:2 }}
+                </div>
+                <div class="text-muted">Total en ventas</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm text-center">
+            <div class="card-body py-4">
+                <div class="fs-2 fw-bold text-success">
+                    {{ total_reservas }}
+                </div>
+                <div class="text-muted">Total de reservas</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Gráficas fila 1 -->
+<div class="row g-4 mb-4">
+    <!-- Ventas por mes -->
+    <div class="col-md-8">
+        <div class="card shadow-sm h-100">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="bi bi-graph-up me-2"></i>Ventas por mes
+                </h6>
+            </div>
+            <div class="card-body"><canvas id="chartMes"></canvas></div>
+        </div>
+    </div>
+    <!-- Reservas por estado -->
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="bi bi-pie-chart me-2"></i>Reservas por estado
+                </h6>
+            </div>
+            <div class="card-body d-flex align-items-center justify-content-center">
+                <canvas id="chartEstado"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Gráficas fila 2 -->
+<div class="row g-4">
+    <!-- Por paquete -->
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="bi bi-gift me-2"></i>Ventas por paquete
+                </h6>
+            </div>
+            <div class="card-body"><canvas id="chartPaquete"></canvas></div>
+        </div>
+    </div>
+    <!-- Por empleado -->
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="bi bi-person-badge me-2"></i>Ventas por
+                    colaborador
+                </h6>
+            </div>
+            <div class="card-body"><canvas id="chartEmpleado"></canvas></div>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // @ts-nocheck
+    const COLORS = ['#0D6EFD', '#198754', '#FFC107', '#DC3545', '#0DCAF0', '#6F42C1', '#FD7E14', '#20C997'];
+
+    // Ventas por mes
+    new Chart(document.getElementById('chartMes'), {
+        type: 'line',
+        data: {
+            labels: {
+                {
+            mes_labels | safe
+                }
+            },
+        datasets: [{
+            label: 'Ventas ($)',
+            data: {
+                    {
+            mes_totales | safe
+                    }
+                },
+        borderColor: '#0D6EFD',
+        backgroundColor: 'rgba(13,110,253,0.1)',
+        fill: true,
+        tension: 0.4,
+        pointRadius: 5,
+            }]
+        },
+        options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                display: false
+            }
+        }
+    }
+    });
+
+    // Reservas por estado
+    new Chart(document.getElementById('chartEstado'), {
+        type: 'doughnut',
+        data: {
+            labels: {
+                {
+            estado_labels | safe
+                }
+            },
+        datasets: [{
+            data: {
+                    {
+            estado_cantidades | safe
+                    }
+                },
+        backgroundColor: ['#198754', '#FFC107', '#DC3545']
+            }]
+        },
+        options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'bottom'
+            }
+        }
+    }
+    });
+
+    // Por paquete
+    new Chart(document.getElementById('chartPaquete'), {
+        type: 'bar',
+        data: {
+            labels: {
+                {
+            paquete_labels | safe
+                }
+            },
+        datasets: [{
+            label: 'Ventas ($)',
+            data: {
+                    {
+            paquete_totales | safe
+                    }
+                },
+        backgroundColor: COLORS,
+            }]
+        },
+        options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+    });
+
+    // Por empleado
+    new Chart(document.getElementById('chartEmpleado'), {
+        type: 'bar',
+        data: {
+            labels: {
+                {
+            empleado_labels | safe
+                }
+            },
+        datasets: [{
+            label: 'Ventas ($)',
+            data: {
+                    {
+            empleado_totales | safe
+                    }
+                },
+        backgroundColor: COLORS,
+            }]
+        },
+        options: {
+        indexAxis: 'y',
+        responsive: true,
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
+        scales: {
+            x: {
+                beginAtZero: true
+            }
+        }
+    }
+    });
+</script>
+
+{% endblock %}

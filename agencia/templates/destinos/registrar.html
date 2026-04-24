@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block titulo %} Registrar Destino {% endblock %}
+
+{% block contenido %}
+
+<div class="card">
+    <div class="card-header">Registrar un nuevo Destino</div>
+    <div class="card-body">
+        <h4 class="card-title">Datos del Destino</h4>
+
+        {% include 'destinos/form.html' %}
+
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block titulo %} Actualizar Destino {% endblock %}
+
+{% block contenido %}
+
+<div class="card">
+    <div class="card-header">Actualizar Destino</div>
+    <div class="card-body">
+        <h4 class="card-title">Datos del Destino</h4>
+
+        {% include 'destinos/form.html' %}
+
+    </div>
+</div>
+
+{% endblock %}

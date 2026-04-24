@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block titulo %} Lista de Clientes {% endblock %}
+
+{% block contenido %}
+
+<div class="card">
+    <div class="card-header">
+        {% if perms.agencia.add_cliente %}
+        <a name="" id="" class="btn btn-success" href="{% url 'registrar_cliente' %}" role="button">Agregar nuevo Cliente</a>
+        {% endif %}
+    </div>
+    <div class="card-body">
+        <h4 class="card-title">Clientes</h4>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Teléfono</th>
+                        <th scope="col">Direccion</th>
+                        <th scope="col">Fecha de registro</th>
+                        <th scope="col">Preferencias</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for Cliente in clientes %}
+                    <tr class="">
+                        <td>{{ Cliente.nombre }}</td>
+                        <td>{{ Cliente.email }}</td>
+                        <td>{{ Cliente.telefono }}</td>
+                        <td>{{ Cliente.direccion }}</td>
+                        <td>{{ Cliente.fecha_registro }}</td>
+                        <td>{{ Cliente.preferencias }}</td>
+                        <td>
+                            {% if perms.agencia.change_cliente %}
+                            <a name="" id="" class="btn btn-info" href="{% url 'actualizar_cliente' id=Cliente.id %}" role="button">Editar</a>
+                            {% endif %}
+                            {% if perms.agencia.delete_cliente %}
+                            <a name="" id="" class="btn btn-danger" href="{% url 'eliminar_cliente' id=Cliente.id %}"
+                            onclick="return confirm('¿Seguro que deseas eliminar a {{ Cliente.nombre }}?')"role="button">Eliminar</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,24 @@
+<form enctype="multipart/form-data" method="post">
+    {% csrf_token %}
+    {% for campo in form %}
+    <div class="mb-3">
+        <label for="{{ campo.id_for_label }}" class="form-label">{{ campo.label }}:</label>
+
+        {% if campo.field.widget.input_type == 'file' and campo.value %}
+            <br>
+            <img src="{{ MEDIA_URL }}/media/{{ campo.value }}" width="80" alt="Imagen actual" class="mb-2 rounded">
+        {% endif %}
+
+        {{ campo }}
+
+        {% if campo.errors %}
+            <div class="text-danger small mt-1">
+                {{ campo.errors }}
+            </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+
+    <input class="btn btn-success" type="submit" value="Guardar" />
+    <a class="btn btn-secondary" href="{% url 'empleados' %}" role="button">Cancelar</a>
+</form>

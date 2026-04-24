@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block titulo %} Lista de Destinos {% endblock %}
+
+{% block contenido %}
+
+<div class="card">
+    <div class="card-header">
+        {% if perms.agencia.add_destino %}
+        <a name="" id="" class="btn btn-success" href="{% url 'registrar_destino' %}" role="button">Agregar nuevo Destino</a>
+        {% endif %}
+    </div>
+    <div class="card-body">
+        <h4 class="card-title">Destinos</h4>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">País</th>
+                        <th scope="col">Descripción</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for Destino in destinos %}
+                    <tr class="">
+                        <td>{{ Destino.nombre }}</td>
+                        <td>{{ Destino.pais }}</td>
+                        <td>{{ Destino.descripcion }}</td>
+
+                        <td>
+                            {% if perms.agencia.change_destino %}
+                            <a name="" id="" class="btn btn-info" href="{% url 'actualizar_destino' id=Destino.id %}" role="button">Editar</a>
+                            {% endif %}
+                            {% if perms.agencia.delete_destino %}
+                            <a name="" id="" class="btn btn-danger" href="{% url 'eliminar_destino' id=Destino.id %}"
+                            onclick="return confirm('¿Seguro que deseas eliminar a {{ Destino.nombre }}?') "role="button">Eliminar</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

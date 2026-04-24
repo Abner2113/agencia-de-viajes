@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block titulo %}Interacciones{% endblock %}
+
+{% block contenido %}
+
+<div class="card">
+    <div class="card-header">
+        {% if perms.agencia.add_interaccion %}
+        <a class="btn btn-success" href="{% url 'registrar_interaccion' %}" role="button">Agregar nueva Interacción</a>
+        {% endif %}
+    </div>
+    <div class="card-body">
+        <h4 class="card-title">Interacciones</h4>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Cliente</th>
+                        <th>Empleado</th>
+                        <th>Tipo</th>
+                        <th>Fecha y Hora</th>
+                        <th>Notas</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for interaccion in interacciones %}
+                    <tr>
+                        <td>{{ interaccion.cliente.username }}</td>
+                        <td>{{ interaccion.empleado.username }}</td>
+                        <td>{{ interaccion.get_tipo_display }}</td>
+                        <td>{{ interaccion.fecha_interaccion|date:"d/m/Y H:i" }}</td>
+                        <td>{{ interaccion.notas|default:"—" }}</td>
+                        <td>
+                            {% if perms.agencia.change_interaccion %}
+                            <a class="btn btn-info" href="{% url 'actualizar_interaccion' interaccion.id %}" role="button">Editar</a>
+                            {% endif %}
+                            {% if perms.agencia.delete_interaccion %}
+                            <a class="btn btn-danger" href="{% url 'eliminar_interaccion' interaccion.id %}" role="button">Eliminar</a>
+
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="text-center">No hay interacciones registradas.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

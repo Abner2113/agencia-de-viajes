@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block titulo %} Lista de Reservas {% endblock %}
+
+{% block contenido %}
+
+<!-- Formulario de Filtros -->
+<div class="card mb-4">
+    <div class="card-header">
+        <h6 class="mb-0"><i class="bi bi-funnel me-2"></i>Filtrar Reservas</h6>
+    </div>
+    <div class="card-body">
+        <form method="get" action="">
+            <div class="row g-3">
+                <div class="col-md-2">
+                    <label class="form-label">{{ filtro_form.fecha_desde.label }}</label>
+                    {{ filtro_form.fecha_desde }}
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">{{ filtro_form.fecha_hasta.label }}</label>
+                    {{ filtro_form.fecha_hasta }}
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">{{ filtro_form.paquete.label }}</label>
+                    {{ filtro_form.paquete }}
+                </div>
+                {% if request.user.is_superuser %}
+                <div class="col-md-2">
+                    <label class="form-label">{{ filtro_form.empleado.label }}</label>
+                    {{ filtro_form.empleado }}
+                </div>
+                {% endif %}
+                <div class="col-md-2">
+                    <label class="form-label">{{ filtro_form.estado.label }}</label>
+                    {{ filtro_form.estado }}
+                </div>
+                <div class="col-md-1 d-flex align-items-end gap-1">
+                    <button type="submit" class="btn btn-primary btn-sm w-100">
+                        <i class="bi bi-search"></i>
+                    </button>
+                    <a href="{% url 'reservas' %}" class="btn btn-outline-secondary btn-sm w-100" title="Limpiar filtros">
+                        <i class="bi bi-x-lg"></i>
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Listado -->
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        {% if perms.agencia.add_reserva or request.user.is_superuser %}
+        <a class="btn btn-success btn-sm" href="{% url 'registrar_reserva' %}" role="button">
+            <i class="bi bi-plus-circle me-1"></i>Nueva Reserva
+        </a>
+        {% else %}
+        <span></span>
+        {% endif %}
+        <span class="text-muted small">
+            {{ reservas|length }} resultado{% if reservas|length != 1 %}s{% endif %}
+        </span>
+    </div>
+    <div class="card-body">
+        <h4 class="card-title">
+            {% if request.user.is_superuser %}
+                Todas las Reservas
+            {% else %}
+                Mis Reservas
+            {% endif %}
+        </h4>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Cliente</th>
+                        <th>Paquete</th>
+                        <th>Colaborador</th>
+                        <th>Fecha</th>
+                        <th>Precio</th>
+                        <th>Método Pago</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reserva in reservas %}
+                    <tr>
+                        <td>{{ reserva.cliente }}</td>
+                        <td>{{ reserva.paquete }}</td>
+                        <td>{{ reserva.empleado }}</td>
+                        <td>{{ reserva.fecha_reserva }}</td>
+                        <td>${{ reserva.precio_venta }}</td>
+                        <td>{{ reserva.metodo_pago }}</td>
+                        <td>
+                            {% if reserva.estado == 'confirmada' %}
+                                <span class="badge bg-success">Confirmada</span>
+                            {% elif reserva.estado == 'cancelada' %}
+                                <span class="badge bg-danger">Cancelada</span>
+                            {% else %}
+                                <span class="badge bg-warning text-dark">Pendiente</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if perms.agencia.change_reserva or request.user.is_superuser %}
+                            <a class="btn btn-info btn-sm" href="{% url 'actualizar_reserva' id=reserva.id %}">Editar</a>
+                            {% endif %}
+                            {% if perms.agencia.delete_reserva or request.user.is_superuser %}
+                            <a class="btn btn-danger btn-sm" href="{% url 'eliminar_reserva' id=reserva.id %}"
+                                onclick="return confirm('¿Eliminar esta reserva?')">Eliminar</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="8" class="text-center text-muted py-3">No se encontraron reservas.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block titulo %} Actualizar Rol {% endblock %}
+
+{% block contenido %}
+
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0">Actualizar Rol: <strong>{{ rol.name }}</strong></h5>
+    </div>
+    <div class="card-body">
+        {% include 'roles/form.html' %}
+    </div>
+</div>
+
+{% endblock %}

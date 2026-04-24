@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block titulo %}Registrar Interacción{% endblock %}
+
+{% block contenido %}
+
+<div class="card">
+    <div class="card-header">
+        Registrar Interacción
+    </div>
+    <div class="card-body">
+        <h4 class="card-title">Datos de la Interacción</h4>
+        {% include 'interacciones/form.html' %}
+    </div>
+</div>
+
+{% endblock %}
