@@ -7,7 +7,7 @@
 <div class="card">
     <div class="card-header">
         {% if perms.agencia.add_destino %}
-        <a name="" id="" class="btn btn-success" href="{% url 'registrar_destino' %}" role="button">Agregar nuevo Destino</a>
+        <a name="" id="" class="btn btn-success" href="{% url 'registrar_destino' %}" role="button"><i class="bi bi-plus-circle me-2"></i>Agregar nuevo Destino</a>
         {% endif %}
     </div>
     <div class="card-body">
@@ -31,11 +31,11 @@
 
                         <td>
                             {% if perms.agencia.change_destino %}
-                            <a name="" id="" class="btn btn-info" href="{% url 'actualizar_destino' id=Destino.id %}" role="button">Editar</a>
+                            <a name="" id="" class="btn btn-info" href="{% url 'actualizar_destino' id=Destino.id %}" role="button"><i class="bi bi-pencil me-1"></i>Editar</a>
                             {% endif %}
                             {% if perms.agencia.delete_destino %}
                             <a name="" id="" class="btn btn-danger" href="{% url 'eliminar_destino' id=Destino.id %}"
-                            onclick="return confirm('¿Seguro que deseas eliminar a {{ Destino.nombre }}?') "role="button">Eliminar</a>
+                            onclick="return confirm('¿Seguro que deseas eliminar a {{ Destino.nombre }}?') "role="button"><i class="bi bi-trash me-1"></i>Eliminar</a>
                             {% endif %}
                         </td>
                     </tr>

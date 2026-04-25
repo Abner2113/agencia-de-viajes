@@ -6,7 +6,7 @@
 <div class="card">
     <div class="card-header">
         {% if perms.agencia.add_interaccion %}
-        <a class="btn btn-success" href="{% url 'registrar_interaccion' %}" role="button">Agregar nueva Interacción</a>
+        <a class="btn btn-success" href="{% url 'registrar_interaccion' %}" role="button"><i class="bi bi-plus-circle me-2"></i>Agregar nueva Interacción</a>
         {% endif %}
     </div>
     <div class="card-body">
@@ -26,18 +26,17 @@
                 <tbody>
                     {% for interaccion in interacciones %}
                     <tr>
-                        <td>{{ interaccion.cliente.username }}</td>
+                        <td>{{ interaccion.cliente.nombre }}</td>
                         <td>{{ interaccion.empleado.username }}</td>
                         <td>{{ interaccion.get_tipo_display }}</td>
                         <td>{{ interaccion.fecha_interaccion|date:"d/m/Y H:i" }}</td>
                         <td>{{ interaccion.notas|default:"—" }}</td>
                         <td>
                             {% if perms.agencia.change_interaccion %}
-                            <a class="btn btn-info" href="{% url 'actualizar_interaccion' interaccion.id %}" role="button">Editar</a>
+                            <a class="btn btn-info" href="{% url 'actualizar_interaccion' interaccion.id %}" role="button"><i class="bi bi-pencil me-1"></i>Editar</a>
                             {% endif %}
                             {% if perms.agencia.delete_interaccion %}
-                            <a class="btn btn-danger" href="{% url 'eliminar_interaccion' interaccion.id %}" role="button">Eliminar</a>
-
+                            <a class="btn btn-danger" href="{% url 'eliminar_interaccion' interaccion.id %}" role="button"><i class="bi bi-trash me-1"></i>Eliminar</a>
                             {% endif %}
                         </td>
                     </tr>

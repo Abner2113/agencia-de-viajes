@@ -7,7 +7,7 @@
 <div class="card">
     <div class="card-header">
         {% if perms.agencia.add_proveedor %}
-        <a name="" id="" class="btn btn-success" href="{% url 'registrar_proveedor' %}" role="button">Agregar nuevo Proveedor</a>
+        <a name="" id="" class="btn btn-success" href="{% url 'registrar_proveedor' %}" role="button"><i class="bi bi-plus-circle me-2"></i>Agregar nuevo Proveedor</a>
         {% endif %}
     </div>
     <div class="card-body">
@@ -30,11 +30,11 @@
                         <td>{{ Proveedor.contacto }}</td>
                         <td>
                             {% if perms.agencia.change_proveedor %}
-                            <a name="" id="" class="btn btn-info" href="{% url 'actualizar_proveedor' id=Proveedor.id %}" role="button">Editar</a>
+                            <a name="" id="" class="btn btn-info" href="{% url 'actualizar_proveedor' id=Proveedor.id %}" role="button"><i class="bi bi-pencil me-1"></i>Editar</a>
                             {% endif %}
                             {% if perms.agencia.delete_proveedor %}
                             <a name="" id="" class="btn btn-danger" href="{% url 'eliminar_proveedor' id=Proveedor.id %}"
-                            onclick="return confirm('¿Seguro que deseas eliminar a {{ proveedor.nombre }}?') "role="button">Eliminar</a>
+                            onclick="return confirm('¿Seguro que deseas eliminar a {{ proveedor.nombre }}?') "role="button"><i class="bi bi-trash me-1"></i>Eliminar</a>
                             {% endif %}
                         </td>
                     </tr>

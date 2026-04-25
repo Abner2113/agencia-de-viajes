@@ -7,7 +7,7 @@
 <div class="card">
     <div class="card-header">
         {% if perms.agencia.add_paquete %}
-        <a class="btn btn-success" href="{% url 'registrar_paquete' %}" role="button">Agregar nuevo Paquete</a>
+        <a class="btn btn-success" href="{% url 'registrar_paquete' %}" role="button"><i class="bi bi-plus-circle me-2"></i>Agregar nuevo Paquete</a>
         {% endif %}
     </div>
     <div class="card-body">
@@ -45,12 +45,12 @@
                         <td>
                             {% if perms.agencia.change_paquete %}
                             <a class="btn btn-info" href="{% url 'actualizar_paquete' id=paquete.id %}"
-                                role="button">Editar</a>
+                                role="button"><i class="bi bi-pencil me-1"></i>Editar</a>
                             {% endif %}
                             {% if perms.agencia.delete_paquete %}
                             <a class="btn btn-danger" href="{% url 'eliminar_paquete' id=paquete.id %}"
                                 onclick="return confirm('¿Seguro que deseas eliminar el paquete {{ paquete.nombre }}?')"
-                                role="button">Eliminar</a>
+                                role="button"><i class="bi bi-trash me-1"></i>Eliminar</a>
                             {% endif %}
                             <a class="btn btn-secondary" href="{% url 'comentarios_paquete' id=paquete.id %}"
                                 role="button">
