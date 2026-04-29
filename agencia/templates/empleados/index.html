@@ -7,7 +7,7 @@
 <div class="card">
     <div class="card-header">
         {% if perms.agencia.add_empleado %}
-        <a class="btn btn-success" href="{% url 'registrar_empleado' %}" role="button">Agregar nuevo Empleado</a>
+        <a class="btn btn-success" href="{% url 'registrar_empleado' %}" role="button"><i class="bi bi-plus-circle me-2"></i>Agregar nuevo Empleado</a>
         {% endif %}
     </div>
     <div class="card-body">
@@ -23,7 +23,6 @@
                         <th>Teléfono</th>
                         <th>Dirección</th>
                         <th>Puesto</th>
-                        <th>Admin</th>
                         <th>Contratación</th>
                         <th>Último acceso</th>
                         <th>Acciones</th>
@@ -47,22 +46,15 @@
                         <td>
                             <span class="badge bg-secondary">{{ empleado.get_puesto_display }}</span>
                         </td>
-                        <td>
-                            {% if empleado.is_admin %}
-                                <span class="badge bg-danger">Sí</span>
-                            {% else %}
-                                <span class="badge bg-light text-dark">No</span>
-                            {% endif %}
-                        </td>
                         <td>{{ empleado.fecha_contratacion|date:"d/m/Y" }}</td>
                         <td>{{ empleado.last_login|date:"d/m/Y H:i"|default:"Nunca" }}</td>
                         <td>
                             {% if perms.agencia.change_empleado %}
-                            <a class="btn btn-info btn-sm" href="{% url 'actualizar_empleado' id=empleado.id %}">Editar</a>
+                            <a class="btn btn-info btn-sm" href="{% url 'actualizar_empleado' id=empleado.id %}"><i class="bi bi-pencil me-1"></i>Editar</a>
                             {% endif %}
                             {% if perms.agencia.delete_empleado %}
                             <a class="btn btn-danger btn-sm" href="{% url 'eliminar_empleado' id=empleado.id %}"
-                               onclick="return confirm('¿Seguro que deseas eliminar a {{ empleado.username }}?')">Eliminar</a>
+                               onclick="return confirm('¿Seguro que deseas eliminar a {{ empleado.username }}?')"><i class="bi bi-trash me-1"></i>Eliminar</a>
                             {% endif %}
                         </td>
                     </tr>

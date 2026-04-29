@@ -131,139 +131,55 @@
 
 <!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    // @ts-nocheck
+<script>    
     const COLORS = ['#0D6EFD', '#198754', '#FFC107', '#DC3545', '#0DCAF0', '#6F42C1', '#FD7E14', '#20C997'];
 
     // Ventas por mes
     new Chart(document.getElementById('chartMes'), {
         type: 'line',
         data: {
-            labels: {
-                {
-            mes_labels | safe
-                }
-            },
-        datasets: [{
-            label: 'Ventas ($)',
-            data: {
-                    {
-            mes_totales | safe
-                    }
-                },
-        borderColor: '#0D6EFD',
-        backgroundColor: 'rgba(13,110,253,0.1)',
-        fill: true,
-        tension: 0.4,
-        pointRadius: 5,
+            labels: {{ mes_labels|safe }},
+            datasets: [{
+                label: 'Ventas ($)',
+                data: {{ mes_totales|safe }},
+                borderColor: '#0D6EFD',
+                backgroundColor: 'rgba(13,110,253,0.1)',
+                fill: true,
+                tension: 0.4,
+                pointRadius: 5,
             }]
         },
-        options: {
-        responsive: true,
-        plugins: {
-            legend: {
-                display: false
-            }
-        }
-    }
+        options: { responsive: true, plugins: { legend: { display: false } } }
     });
 
     // Reservas por estado
     new Chart(document.getElementById('chartEstado'), {
         type: 'doughnut',
         data: {
-            labels: {
-                {
-            estado_labels | safe
-                }
-            },
-        datasets: [{
-            data: {
-                    {
-            estado_cantidades | safe
-                    }
-                },
-        backgroundColor: ['#198754', '#FFC107', '#DC3545']
-            }]
+            labels: {{ estado_labels|safe }},
+            datasets: [{ data: {{ estado_cantidades|safe }}, backgroundColor: ['#DC3545', '#198754', '#FFC107'] }]
         },
-        options: {
-        responsive: true,
-        plugins: {
-            legend: {
-                position: 'bottom'
-            }
-        }
-    }
+        options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
     });
 
-    // Por paquete
+    // Ventas por paquete
     new Chart(document.getElementById('chartPaquete'), {
         type: 'bar',
         data: {
-            labels: {
-                {
-            paquete_labels | safe
-                }
-            },
-        datasets: [{
-            label: 'Ventas ($)',
-            data: {
-                    {
-            paquete_totales | safe
-                    }
-                },
-        backgroundColor: COLORS,
-            }]
+            labels: {{ paquete_labels|safe }},
+            datasets: [{ label: 'Ventas ($)', data: {{ paquete_totales|safe }}, backgroundColor: COLORS }]
         },
-        options: {
-        responsive: true,
-        plugins: {
-            legend: {
-                display: false
-            }
-        },
-        scales: {
-            y: {
-                beginAtZero: true
-            }
-        }
-    }
+        options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
     });
 
-    // Por empleado
+    // Ventas por colaborador
     new Chart(document.getElementById('chartEmpleado'), {
         type: 'bar',
         data: {
-            labels: {
-                {
-            empleado_labels | safe
-                }
-            },
-        datasets: [{
-            label: 'Ventas ($)',
-            data: {
-                    {
-            empleado_totales | safe
-                    }
-                },
-        backgroundColor: COLORS,
-            }]
+            labels: {{ empleado_labels|safe }},
+            datasets: [{ label: 'Ventas ($)', data: {{ empleado_totales|safe }}, backgroundColor: COLORS }]
         },
-        options: {
-        indexAxis: 'y',
-        responsive: true,
-        plugins: {
-            legend: {
-                display: false
-            }
-        },
-        scales: {
-            x: {
-                beginAtZero: true
-            }
-        }
-    }
+        options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true } } }
     });
 </script>
-
 {% endblock %}
