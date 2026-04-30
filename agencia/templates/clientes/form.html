@@ -13,8 +13,7 @@
         {% endif %}
     </div>
     {% endfor %}
-
-    <input class="btn btn-success" type="submit" value="Enviar informacion" />
-    <a class="btn btn-primary" href="{% url 'clientes' %}" role="button">Cancelar</a>
     
+    <input class="btn btn-success" type="submit" value="Enviar informacion" />
+    <a class="btn btn-danger" href="{% url 'clientes' %}" role="button">Cancelar</a>
 </form>

@@ -13,7 +13,6 @@
     {% endif %}
     {% endfor %}
 
-    <!-- Campo Productos (ManyToMany) con checkboxes -->
     <div class="mb-3">
         <label class="form-label">Productos incluidos:</label>
         <div class="border rounded p-3" style="max-height: 220px; overflow-y: auto;">
@@ -37,6 +36,6 @@
     </div>
 
     <input class="btn btn-success" type="submit" value="Enviar información" />
-    <a class="btn btn-primary" href="{% url 'paquetes' %}" role="button">Cancelar</a>
+    <a class="btn btn-danger" href="{% url 'paquetes' %}" role="button">Cancelar</a>
 
 </form>

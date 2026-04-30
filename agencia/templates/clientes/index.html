@@ -7,7 +7,7 @@
 <div class="card">
     <div class="card-header">
         {% if perms.agencia.add_cliente %}
-        <a name="" id="" class="btn btn-success" href="{% url 'registrar_cliente' %}" role="button">Agregar nuevo Cliente</a>
+        <a name="" id="" class="btn btn-success" href="{% url 'registrar_cliente' %}" role="button"><i class="bi bi-plus-circle me-2"></i>Agregar nuevo Cliente</a>
         {% endif %}
     </div>
     <div class="card-body">
@@ -36,11 +36,11 @@
                         <td>{{ Cliente.preferencias }}</td>
                         <td>
                             {% if perms.agencia.change_cliente %}
-                            <a name="" id="" class="btn btn-info" href="{% url 'actualizar_cliente' id=Cliente.id %}" role="button">Editar</a>
+                            <a name="" id="" class="btn btn-info" href="{% url 'actualizar_cliente' id=Cliente.id %}" role="button"><i class="bi bi-pencil me-1"></i>Editar</a>
                             {% endif %}
                             {% if perms.agencia.delete_cliente %}
                             <a name="" id="" class="btn btn-danger" href="{% url 'eliminar_cliente' id=Cliente.id %}"
-                            onclick="return confirm('¿Seguro que deseas eliminar a {{ Cliente.nombre }}?')"role="button">Eliminar</a>
+                            onclick="return confirm('¿Seguro que deseas eliminar a {{ Cliente.nombre }}?')"role="button"><i class="bi bi-trash me-1"></i>Eliminar</a>
                             {% endif %}
                         </td>
                     </tr>

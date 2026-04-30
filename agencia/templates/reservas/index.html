@@ -4,7 +4,6 @@
 
 {% block contenido %}
 
-<!-- Formulario de Filtros -->
 <div class="card mb-4">
     <div class="card-header">
         <h6 class="mb-0"><i class="bi bi-funnel me-2"></i>Filtrar Reservas</h6>
@@ -47,12 +46,11 @@
     </div>
 </div>
 
-<!-- Listado -->
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
         {% if perms.agencia.add_reserva or request.user.is_superuser %}
         <a class="btn btn-success btn-sm" href="{% url 'registrar_reserva' %}" role="button">
-            <i class="bi bi-plus-circle me-1"></i>Nueva Reserva
+            <i class="bi bi-plus-circle me-1"></i>Agregar nueva Reserva
         </a>
         {% else %}
         <span></span>
@@ -103,11 +101,11 @@
                         </td>
                         <td>
                             {% if perms.agencia.change_reserva or request.user.is_superuser %}
-                            <a class="btn btn-info btn-sm" href="{% url 'actualizar_reserva' id=reserva.id %}">Editar</a>
+                            <a class="btn btn-info btn-sm" href="{% url 'actualizar_reserva' id=reserva.id %}"><i class="bi bi-pencil me-1"></i>Editar</a>
                             {% endif %}
                             {% if perms.agencia.delete_reserva or request.user.is_superuser %}
                             <a class="btn btn-danger btn-sm" href="{% url 'eliminar_reserva' id=reserva.id %}"
-                                onclick="return confirm('¿Eliminar esta reserva?')">Eliminar</a>
+                                onclick="return confirm('¿Eliminar esta reserva?')"><i class="bi bi-trash me-1"></i>Eliminar</a>
                             {% endif %}
                         </td>
                     </tr>

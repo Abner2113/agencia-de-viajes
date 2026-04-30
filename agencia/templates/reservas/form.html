@@ -1,11 +1,8 @@
-<!-- Flatpickr CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-
 <form enctype="multipart/form-data" method="post">
     {% csrf_token %} {% for campo in form %}
     <div class="mb-3">
         <label for="{{ campo.id_for_label }}" class="form-label">{{ campo.label }}:</label> {% if campo.name == 'fecha_reserva' %}
-        <!-- Input de fecha reemplazado por Flatpickr -->
         <div class="input-group">
             <span class="input-group-text"><i class="bi bi-calendar3"></i></span> {{ campo }}
         </div>
@@ -16,10 +13,9 @@
     {% endfor %}
 
     <input class="btn btn-success" type="submit" value="Enviar información" />
-    <a class="btn btn-primary" href="{% url 'reservas' %}" role="button">Cancelar</a>
+    <a class="btn btn-danger" href="{% url 'reservas' %}" role="button">Cancelar</a>
 </form>
 
-<!-- Flatpickr JS -->
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
 <script>
