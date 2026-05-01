@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        @page {
+            size: A4 landscape;
+            margin: 1.5cm;
+        }
+
+        body {
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 10px;
+            color: #1E293B;
+            background: #FFF8F2;
+        }
+
+        /* ── ENCABEZADO ── */
+        .header {
+            background-color: #FF6B47;
+            color: white;
+            padding: 14px 20px;
+            border-radius: 12px;
+            margin-bottom: 14px;
+        }
+
+        .header h1 {
+            font-size: 16px;
+            font-weight: 900;
+            margin: 0 0 4px 0;
+        }
+
+        .header p {
+            margin: 0;
+            font-size: 9px;
+            opacity: 0.88;
+        }
+
+        .kpi-table {
+            width: 100%;
+            margin-bottom: 14px;
+            border-collapse: separate;
+            border-spacing: 8px 0;
+        }
+
+        .kpi-table td { width: 50%; vertical-align: top; }
+
+        .kpi-box {
+            background: #FFFFFF;
+            border: 2px solid #E8EEF4;
+            border-left: 5px solid #FF6B47;
+            padding: 10px 14px;
+            border-radius: 12px;
+        }
+
+        .kpi-box.green { border-left-color: #10B981; }
+
+        .kpi-value {
+            font-size: 20px;
+            font-weight: 900;
+            color: #FF6B47;
+            margin: 0;
+        }
+
+        .kpi-value.green { color: #10B981; }
+
+        .kpi-label {
+            font-size: 9px;
+            color: #64748B;
+            margin: 3px 0 0 0;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        /* ── SECCIÓN ── */
+        .section-title {
+            font-size: 10px;
+            font-weight: 900;
+            color: #1E293B;
+            margin: 14px 0 6px 0;
+            border-bottom: 2px solid #E8EEF4;
+            padding-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        /* ── TABLA ── */
+        table.data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table.data-table thead tr {
+            background-color: #FF6B47;
+            color: white;
+        }
+
+        table.data-table thead th {
+            padding: 8px 10px;
+            text-align: left;
+            font-size: 8px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        table.data-table tbody tr:nth-child(even) {
+            background-color: #FFF8F2;
+        }
+
+        table.data-table tbody tr:nth-child(odd) {
+            background-color: #FFFFFF;
+        }
+
+        table.data-table tbody td {
+            padding: 7px 10px;
+            border-bottom: 1px solid #E8EEF4;
+            font-size: 9px;
+            color: #1E293B;
+            vertical-align: middle;
+        }
+
+        .badge {
+            padding: 2px 9px;
+            border-radius: 99px;
+            font-size: 8px;
+            font-weight: 700;
+        }
+
+        .badge-confirmada { background: #D1FAE5; color: #065F46; }
+        .badge-pendiente  { background: #FEF3C7; color: #92400E; }
+        .badge-cancelada  { background: #FFE4E6; color: #9F1239; }
+
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1> Reporte de Reservas — Agencia de Viajes</h1>
+        <p>
+            {% if fecha_desde or fecha_hasta %}
+                Período: {{ fecha_desde|default:"inicio" }} — {{ fecha_hasta|default:"hoy" }}
+            {% else %}
+                Todas las fechas
+            {% endif %}
+            &nbsp;|&nbsp; Generado el: {{ fecha_generacion }}
+        </p>
+    </div>
+
+    <table class="kpi-table">
+        <tr>
+            <td>
+                <div class="kpi-box">
+                    <p class="kpi-value">${{ total_ventas|floatformat:2 }}</p>
+                    <p class="kpi-label">Total en ventas</p>
+                </div>
+            </td>
+            <td>
+                <div class="kpi-box green">
+                    <p class="kpi-value green">{{ total_reservas }}</p>
+                    <p class="kpi-label">Total de reservas</p>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <p class="section-title">Detalle de Reservas</p>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Cliente</th>
+                <th>Paquete</th>
+                <th>Colaborador</th>
+                <th>Fecha</th>
+                <th>Precio</th>
+                <th>Método de Pago</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reserva in reservas %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ reserva.cliente }}</td>
+                <td>{{ reserva.paquete }}</td>
+                <td>{{ reserva.empleado }}</td>
+                <td>{{ reserva.fecha_reserva }}</td>
+                <td>${{ reserva.precio_venta }}</td>
+                <td>{{ reserva.metodo_pago }}</td>
+                <td>
+                    <span class="badge badge-{{ reserva.estado }}">{{ reserva.estado }}</span>
+                </td>
+            </tr>
+            {% empty %}
+            <tr class="empty-row">
+                <td colspan="8">No hay reservas para el período seleccionado.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
